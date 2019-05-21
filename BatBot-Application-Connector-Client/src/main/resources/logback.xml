@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+	<!-- Common Location for Logs  -->
+	<property name="DEV_HOME" value="C:/Data/STS Workspace/Application Logs/" />
+	<property name="CONSOLE_LOG_PATTERN" value="%highlight(%d{yyyy-MM-dd} | %d{HH:mm:ss} | %-20.20thread | %5p | %-25.25logger{25}) | %m%n"/>
+	<property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd} | %d{HH:mm:ss} | %-20.20thread | %5p | %-25.25logger{25} | %m%n"/>
+	<property name="HTML_LOG_PATTERN" value="%d{yyyy-MM-dd}%d{HH:mm:ss}%-20.20thread%5p%-25.25logger{25}%m"/>
+	
+						<!-- Console Configuration -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<withJansi>true</withJansi>
+		<encoder>
+			<!-- <pattern>%highlight([%d{yyyy-MM-dd HH:mm:ss}] - [${HOSTNAME}] - %-5level) - [%thread] - [%C] - [%ex] %msg%n</pattern> -->
+			<!-- <pattern>%highlight(%d{yyyy-MM-dd} | %d{HH:mm:ss.SSS} | %-20.20thread | %5p | %-25.25logger{25}) | %m%n</pattern> -->
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+	
+			<!-- Creation & Back-up Configuration for 'DEBUG' File -->
+	<appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		
+		<file>${DEV_HOME}/BatBotClient_Debug.log</file>
+		
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      		<Pattern>${FILE_LOG_PATTERN}</Pattern>
+    	</encoder>
+    	
+    	<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+    		<fileNamePattern>${DEV_HOME}/archived/BatBotClient_Debug_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+    		<maxHistory>30</maxHistory>
+        	<totalSizeCap>3GB</totalSizeCap>
+    		<timeBasedFileNamingAndTriggeringPolicy class ="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+    			<maxFileSize>1GB</maxFileSize>
+    		</timeBasedFileNamingAndTriggeringPolicy>
+    		<maxFileSize>1GB</maxFileSize>
+    	</rollingPolicy>
+    	
+	</appender>
+	
+			<!-- Creation & Back-up Configuration for 'ERROR' File -->
+	<!-- <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		
+		<file>${DEV_HOME}/ServiceNow_Error.log</file>
+		
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      		<Pattern>[%d{yyyy-MM-dd HH:mm:ss}] - [${HOSTNAME}] - %-5level - [%thread] - [%C] - [%ex] %msg%n</Pattern>
+    	</encoder>
+    	
+    	<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+    		<fileNamePattern>${DEV_HOME}/archived/ServiceNow_Error_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+    		<timeBasedFileNamingAndTriggeringPolicy class ="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+    			<maxFileSize>1GB</maxFileSize>
+    		</timeBasedFileNamingAndTriggeringPolicy>
+    		<maxFileSize>1GB</maxFileSize>
+    	</rollingPolicy>
+    	
+	</appender> -->
+	
+	<!-- Creation & Back-up Configuration of LOGS IN HTML FORMAT to display -->
+	<appender name="HTML" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${DEV_HOME}/BatBotClient_Errorlog.html</file>
+		<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+			<layout class="ch.qos.logback.classic.html.HTMLLayout">
+				<!-- <pattern>%d{yyyy-MM-dd HH:mm:ss}${HOSTNAME}%-5level%thread%C%ex%msg</pattern> -->
+				<Pattern>${HTML_LOG_PATTERN}</Pattern>
+			</layout>
+		</encoder>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+    		<fileNamePattern>${DEV_HOME}/archived/BatBotClient_Errorlog_%d{yyyy-MM-dd}.%i.html</fileNamePattern>
+    		<maxHistory>30</maxHistory>
+        	<totalSizeCap>3GB</totalSizeCap>
+    		<timeBasedFileNamingAndTriggeringPolicy class ="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+    			<maxFileSize>1GB</maxFileSize>
+    		</timeBasedFileNamingAndTriggeringPolicy>
+    		<maxFileSize>1GB</maxFileSize>
+    	</rollingPolicy>
+		
+	</appender>
+	
+							<!-- LOGS WRITING IN DB -->
+	<!-- <appender name="DATABASE" class="ch.qos.logback.classic.db.DBAppender">
+        <connectionSource	class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+            <driverClass>org.postgresql.Driver</driverClass>
+            <url>jdbc:postgresql://localhost:5432/LOGGER</url>
+            <user>postgres</user>
+            <password>root</password> no password
+        </connectionSource>
+    </appender> -->
+	
+		<!-- Redirecting All 'ERROR' Outputs to ERROR,HTML,DB File  -->
+	<!-- <logger name="com" level="ERROR" additivity="false">
+		<appender-ref ref="ERROR"/>
+  		<appender-ref ref="HTML"/>
+		<appender-ref ref="DATABASE"/>		
+	</logger> -->
+		
+		<!-- By default, the level of the root level is set to DEBUG -->
+  	<root level="INFO">
+  		<appender-ref ref="STDOUT"/>
+    	<appender-ref ref="DEBUG"/>
+    	<appender-ref ref="HTML"/>
+  	</root>
+
+</configuration>
